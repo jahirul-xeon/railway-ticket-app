@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// Railway Ticket — Firestore security rules.
+//
+// While first building, you can keep the database in "test mode" (open).
+// Before sharing the app, paste these rules in:
+//   Firebase console -> Firestore Database -> Rules -> Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Reference data seeded by the app: anyone signed in may read.
+    // Writes happen once from the app during seeding; lock down further
+    // (to false) after the first run if you prefer.
+    match /stations/{id} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+    match /trains/{id} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+    match /developers/{id} {
+      allow read: if signedIn();
+      allow write: if signedIn();
+    }
+    match /meta/{id} {
+      allow read, write: if signedIn();
+    }
+
+    // A user profile document — only the owner can read/write it.
+    match /users/{uid} {
+      allow read, write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Bookings — a user may create their own and read/update only their own.
+    match /bookings/{id} {
+      allow create: if signedIn() && request.resource.data.userId == request.auth.uid;
+      allow read, update: if signedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if false;
+    }
+
+    // Seat reservations — any signed-in user may read (to draw the seat map)
+    // and write (booking/cancelling). Seat uniqueness is enforced by the
+    // deterministic document id used in the app's transaction.
+    match /seatReservations/{id} {
+      allow read, write: if signedIn();
+    }
+  }
+}
