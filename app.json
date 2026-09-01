@@ -15,7 +15,7 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "package": "com.railway.ticketapp",
-      "versionCode": 2,
+      "versionCode": 3,
       "predictiveBackGestureEnabled": false
     },
     "ios": {
