@@ -1,0 +1,125 @@
+<!--
+  EmailJS template — paste the HTML below into the template's "Content" (code view).
+
+  In the template's settings also set:
+    To email:  {{to_email}}
+    Subject:   {{subject}}
+    From name: Bangladesh Railway        (or your choice)
+
+  No attachment needed — the email body below IS the ticket.
+
+  Variables used: to_email, subject, passenger_name, train_name, from_station,
+  to_station, travel_date, seats, class_name, total_fare, booking_id
+-->
+<div style="margin:0;padding:0;background:#eef2f0;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f0;padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:16px;overflow:hidden;font-family:Arial,Helvetica,sans-serif;box-shadow:0 8px 30px rgba(11,59,44,.12);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#0B6E4F;padding:26px 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="color:#ffffff;font-size:20px;font-weight:bold;">
+                    🚆&nbsp; Bangladesh Railway
+                  </td>
+                  <td align="right" style="color:#cfe6dc;font-size:12px;">
+                    e-Ticket
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Greeting -->
+          <tr>
+            <td style="padding:28px 30px 6px 30px;">
+              <p style="margin:0;font-size:18px;color:#15241e;font-weight:bold;">
+                Booking Confirmed 🎉
+              </p>
+              <p style="margin:8px 0 0 0;font-size:14px;color:#60646c;line-height:1.6;">
+                Hi {{passenger_name}}, your ticket has been booked successfully.
+                Your ticket details are below — please carry a valid photo ID
+                that matches the passenger name and show this email at boarding.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Route -->
+          <tr>
+            <td style="padding:20px 30px 4px 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                     style="background:#E7F3EE;border-radius:12px;">
+                <tr>
+                  <td style="padding:18px 20px;">
+                    <span style="font-size:11px;color:#095C42;font-weight:bold;letter-spacing:1px;">FROM</span><br/>
+                    <span style="font-size:20px;color:#15241e;font-weight:bold;">{{from_station}}</span>
+                  </td>
+                  <td align="center" style="color:#0B6E4F;font-size:22px;font-weight:bold;">→</td>
+                  <td align="right" style="padding:18px 20px;">
+                    <span style="font-size:11px;color:#095C42;font-weight:bold;letter-spacing:1px;">TO</span><br/>
+                    <span style="font-size:20px;color:#15241e;font-weight:bold;">{{to_station}}</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Details -->
+          <tr>
+            <td style="padding:18px 30px 6px 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="font-size:14px;color:#15241e;">
+                <tr>
+                  <td style="padding:8px 0;color:#60646c;">Train</td>
+                  <td align="right" style="padding:8px 0;font-weight:bold;">{{train_name}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 0;color:#60646c;border-top:1px solid #eef2f0;">Class</td>
+                  <td align="right" style="padding:8px 0;font-weight:bold;border-top:1px solid #eef2f0;">{{class_name}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 0;color:#60646c;border-top:1px solid #eef2f0;">Date</td>
+                  <td align="right" style="padding:8px 0;font-weight:bold;border-top:1px solid #eef2f0;">{{travel_date}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 0;color:#60646c;border-top:1px solid #eef2f0;">Seat(s)</td>
+                  <td align="right" style="padding:8px 0;font-weight:bold;border-top:1px solid #eef2f0;">{{seats}}</td>
+                </tr>
+                <tr>
+                  <td style="padding:8px 0;color:#60646c;border-top:1px solid #eef2f0;">Booking ID</td>
+                  <td align="right" style="padding:8px 0;font-weight:bold;border-top:1px solid #eef2f0;">{{booking_id}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Total -->
+          <tr>
+            <td style="padding:8px 30px 24px 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+                     style="background:#0B6E4F;border-radius:12px;">
+                <tr>
+                  <td style="padding:16px 20px;color:#cfe6dc;font-size:13px;font-weight:bold;">Total Paid</td>
+                  <td align="right" style="padding:16px 20px;color:#ffffff;font-size:22px;font-weight:bold;">{{total_fare}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:16px 30px 28px 30px;border-top:1px solid #eef2f0;">
+              <p style="margin:0;font-size:12px;color:#8a938e;line-height:1.6;text-align:center;">
+                This is a system-generated ticket from the Railway Ticket app.<br/>
+                Thank you for travelling with Bangladesh Railway.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</div>

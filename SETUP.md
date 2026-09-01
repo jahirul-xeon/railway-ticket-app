@@ -105,6 +105,60 @@ seat at once.
 
 ---
 
+## 5b. Email tickets with PDF attachment (via EmailJS)
+
+On a successful booking the app emails the ticket to the account's address using
+**EmailJS** (a client-side email service — free tier, no backend, no Firebase
+Blaze plan needed). The email body itself is the ticket (no file attachment,
+since EmailJS attachments require a paid plan). The in-app **Download PDF**
+button remains for saving/sharing the PDF.
+
+### Setup — on https://dashboard.emailjs.com
+1. Create a free account.
+2. **Email Services → Add** a service (e.g. connect Gmail) → copy its
+   **Service ID**.
+3. **Account → General** → copy your **Public Key**.
+4. **Account → Security** → either copy your **Private Key**, or turn on
+   **"Allow EmailJS calls from non-browser applications"** (a mobile app is a
+   non-browser client, so one of these is required).
+5. **Email Templates → Create New Template**:
+   - **To email:** `{{to_email}}`
+   - **Subject:** `{{subject}}`
+   - **Content:** paste the HTML from [`emailjs-template.html`](./emailjs-template.html)
+     (it uses `{{passenger_name}}`, `{{train_name}}`, `{{from_station}}`,
+     `{{to_station}}`, `{{travel_date}}`, `{{seats}}`, `{{class_name}}`,
+     `{{total_fare}}`, `{{booking_id}}`). No attachment needed.
+   - Save → copy the **Template ID**.
+
+### Put the keys in the app — two options
+
+**Option A — from Firebase (no code changes).** In the Firebase console →
+Firestore → create collection **`config`** → document id **`emailjs`** with
+string fields:
+```
+serviceId   = service_xxx
+templateId  = template_xxx
+publicKey   = xxxxxxxxxxxxxxxx
+privateKey  =            (leave empty if you enabled non-browser calls)
+```
+The app reads this on first send and overrides the code defaults.
+⚠️ Any signed-in user can read `config/emailjs`, so only put the **Public Key**
+here (it's meant to be public). Prefer enabling "Allow non-browser calls" over
+storing the Private Key in Firestore.
+
+**Option B — in code.** Edit [`src/config/emailjs.ts`](./src/config/emailjs.ts):
+```ts
+export const EMAILJS = {
+  serviceId: 'service_xxx',
+  templateId: 'template_xxx',
+  publicKey:  'xxxxxxxxxxxxxxxx',
+  privateKey: '',   // paste your Private Key, or leave '' if you enabled non-browser calls
+};
+```
+
+That's it. Book a ticket → EmailJS delivers the ticket email to the account
+address. A toast confirms *"Ticket emailed to …"*.
+
 ## 6. Project structure
 
 ```

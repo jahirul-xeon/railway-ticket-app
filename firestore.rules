@@ -27,6 +27,12 @@ service cloud.firestore {
       allow read: if signedIn();
       allow write: if signedIn();
     }
+    // App configuration (e.g. EmailJS keys) — read-only for the app;
+    // edit these documents in the Firebase console.
+    match /config/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
     match /meta/{id} {
       allow read, write: if signedIn();
     }

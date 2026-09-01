@@ -16,6 +16,7 @@ import { Button, Card, Field } from '@/components/ui';
 import { AppColors, Radius, Space } from '@/constants/appTheme';
 import { GENDERS, PAYMENT_METHODS } from '@/constants/seedData';
 import { createBooking } from '@/services/api';
+import { sendTicketEmail } from '@/services/mail';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/context/ToastContext';
 import { formatBDT, formatDate } from '@/utils/format';
@@ -64,6 +65,35 @@ export function PassengerScreen({ route, navigation }: Props) {
         paymentMethodId: methodId,
       });
       toast.success('Booking confirmed!');
+
+      // Fire-and-forget the confirmation email (queued via the `mail`
+      // collection → Trigger Email extension). Never block the booking on it.
+      const recipient = profile?.email || user.email;
+      if (recipient) {
+        sendTicketEmail(recipient, {
+          bookingId: res.bookingId,
+          trainName: train.name,
+          trainCode: train.code,
+          fromStation: train.fromStation,
+          toStation: train.toStation,
+          startTime: train.startTime,
+          endTime: train.endTime,
+          travelDate: date,
+          className: carriage.name,
+          classType: carriage.className,
+          seats: res.seats,
+          passengerName: name.trim(),
+          passengerAge: ageNum,
+          gender: GENDERS.find((g) => g.id === genderId)?.name,
+          paymentMethod: PAYMENT_METHODS.find((m) => m.id === methodId)?.name,
+          totalFare: res.totalFare,
+          status: 'Confirmed',
+          bookedAtMs: Date.now(),
+        })
+          .then(() => toast.info(`Ticket emailed to ${recipient}`))
+          .catch((err) => console.warn('Email queue failed:', err?.message));
+      }
+
       navigation.replace('Confirmation', {
         bookingId: res.bookingId,
         trainName: train.name,
